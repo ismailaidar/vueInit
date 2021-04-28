@@ -50,17 +50,17 @@
             <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-white z-20" id="nav-content">
                 <ul class="list-reset lg:flex flex-1 items-center px-4 md:px-0">
                     <li class="mr-6 my-2 md:my-0">
-                        <router-link to="/" class="block py-1 md:py-3 pl-1 align-middle text-pink-600 no-underline hover:text-gray-900 border-b-2 border-orange-600 hover:border-orange-600">
-                            <i class="fas fa-home fa-fw mr-3 text-pink-600"></i><span class="pb-1 md:pb-0 text-sm">Home</span>
+                        <router-link to="/" exact class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900  hover:border-pink-500">
+                            <i class="fas fa-home fa-fw mr-3 "></i><span class="pb-1 md:pb-0 text-sm">Home</span>
                         </router-link>
                     </li>
                     <li class="mr-6 my-2 md:my-0">
-                        <router-link to="/about" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-pink-500">
+                        <router-link to="/about" exact class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900  hover:border-pink-500">
                             <i class="fas fa-tasks fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">About</span>
                         </router-link>
                     </li>
                     <li class="mr-6 my-2 md:my-0">
-                        <router-link to="/allpatients" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-pink-500">
+                        <router-link to="/allpatients" exact class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 hover:border-pink-500">
                             <i class="fas fa-user fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">All patients</span>
                         </router-link>
                     </li>

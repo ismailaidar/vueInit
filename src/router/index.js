@@ -28,7 +28,8 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  linkExactActiveClass: 'text-pink-700 border-b-2 border-orange-600',
 })
 
 export default router
