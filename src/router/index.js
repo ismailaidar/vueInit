@@ -11,9 +11,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/allpatients',
+    path: '/allpatients/:prop',
     name: 'AllPatients',
-    component: AllPatients
+    component: AllPatients,
   },
   {
     path: '/about',

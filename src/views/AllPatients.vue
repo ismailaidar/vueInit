@@ -1,11 +1,11 @@
 <template>
   <div data-app>
-    <h1 class="text-2xl font-bold">All Patients</h1>
+    <h1 class="text-2xl font-bold">ALL PATIENTS</h1>
     <hr class="pb-4" />
     <div class="flex justify-end">
       <input
         type="text"
-        class="w-1/4 bg-white my-4 rounded p-2 focus:outline-none focus:ring focus:border-blue-300 shadow-md "
+        class="w-1/4 bg-white my-4 rounded p-2 focus:outline-none focus:ring focus:border-blue-300 shadow-md"
         v-model="search"
         placeholder="Search"
       />
@@ -156,6 +156,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
 </style>
 

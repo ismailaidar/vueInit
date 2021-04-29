@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.router-link-active {
+nav .router-link-active {
     border-bottom: 2px solid #BE185D;
+}
+
+input[type="text"] {
+    border: 1px solid #c4c4c4 !important;
 }

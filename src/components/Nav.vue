@@ -13,7 +13,7 @@
                 <div class="flex relative inline-block float-right">
 
                     <div class="relative text-sm">
-                        <button id="userButton" class="flex items-center focus:outline-none mr-3">
+                        <button @click="isInvisible = !isInvisible" class="flex items-center focus:outline-none mr-3">
                             <img class="w-8 h-8 rounded-full mr-4" src="http://i.pravatar.cc/300" alt="Avatar of User"> <span class="hidden md:inline-block">Hi, User </span>
                             <svg class="pl-2 h-2" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
                                 <g>
@@ -21,7 +21,7 @@
                                 </g>
                             </svg>
                         </button>
-                        <div id="userMenu" class="bg-white rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto z-30 invisible">
+                        <div id="userMenu" class="bg-white rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto z-30" :class="{'invisible': isInvisible}">
                             <ul class="list-reset">
                                 <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">My account</a></li>
                                 <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Notifications</a></li>
@@ -35,7 +35,7 @@
 
 
                     <div class="block lg:hidden pr-4">
-                        <button id="nav-toggle" class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-teal-500 appearance-none focus:outline-none">
+                        <button @click="menuHidden = !menuHidden" class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-teal-500 appearance-none focus:outline-none">
                             <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <title>Menu</title>
                                 <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
@@ -47,7 +47,7 @@
             </div>
 
 
-            <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-white z-20" id="nav-content">
+            <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto lg:block mt-2 lg:mt-0 bg-white z-20" :class="{'hidden' : menuHidden}">
                 <ul class="list-reset lg:flex flex-1 items-center px-4 md:px-0">
                     <li class="mr-6 my-2 md:my-0">
                         <router-link to="/" exact class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900  hover:border-pink-500">
@@ -60,7 +60,7 @@
                         </router-link>
                     </li>
                     <li class="mr-6 my-2 md:my-0">
-                        <router-link to="/allpatients" exact class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 hover:border-pink-500">
+                        <router-link :to="{name: 'AllPatients', params: {prop: 'all'}}" exact class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 hover:border-pink-500">
                             <i class="fas fa-user fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">All patients</span>
                         </router-link>
                     </li>
@@ -83,7 +83,16 @@
 
 <script>
 export default {
-    name: 'Nav'
+    name: 'Nav',
+    data() {
+        return {
+            isInvisible: true,
+            menuHidden: true
+        }
+    },
+    methods: {
+        
+    }
 }
 </script>
 
