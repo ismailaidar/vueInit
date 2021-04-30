@@ -86,7 +86,11 @@ export default {
             apiUrl = `${url}/patients`
         }
         if(this.search !== '') {
-            apiUrl += `?SearchText=${this.search}`
+            if(apiUrl.includes('?')) {
+              apiUrl += `&SearchText=${this.search}`
+            } else {
+              apiUrl += `?SearchText=${this.search}`
+            }
         }
         axios.get(apiUrl)
             .then(res => {
