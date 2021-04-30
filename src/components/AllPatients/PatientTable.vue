@@ -11,7 +11,17 @@
       </div>
     <table class="stripe hover border-2 shadow-md border-gray-300 w-full">
       <tr>
-        <th v-for="th in headers" :key="th.value">{{ th.text }}</th>
+        <th v-for="th in headers" :key="th.value" class="cursor-pointer" @click="sortCol(th.value)">
+          {{ th.text }}
+          <span v-if="th.sortable" class="inline-block">
+            <svg v-if="th.sortType == 'desc'" class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7"></path>
+            </svg>
+            <svg v-if="th.sortType == 'asc'"  class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7"></path>
+            </svg>
+          </span>
+        </th>
       </tr>
       <tr v-for="patient in patients" :key="patient.id">
         <td>{{ patient.id }}</td>
@@ -54,6 +64,7 @@ export default {
   data() {
     return {
         search: '',
+        sortTypes: ['asc', 'desc', 'none'],
         pagination: {
             firstPage: null,
             lastPage: null,
@@ -62,13 +73,13 @@ export default {
 
         },
         headers: [
-            { text: "Id", value: "Id", visible: true },
-            { text: "First Name", value: "firstName", visible: true },
-            { text: "Last Name", value: "lastName", visible: true },
-            { text: "Category", value: "category", visible: true },
-            { text: "Date of Birth", value: "dob", visible: true },
-            { text: "Insurance", value: "insurance", visible: true },
-            { text: "Drug", value: "drug", visible: true },
+            { text: "Id", value: "Id", visible: true, sortable: true, sortType: 'none' },
+            { text: "First Name", value: "FirstName", visible: true, sortable: true, sortType: 'none' },
+            { text: "Last Name", value: "LastName", visible: true },
+            { text: "Category", value: "Category", visible: true },
+            { text: "Date of Birth", value: "Dob", visible: true },
+            { text: "Insurance", value: "Insurance", visible: true },
+            { text: "Drug", value: "Drug", visible: true },
         ],
         patients: [],
     };
@@ -85,6 +96,7 @@ export default {
             const url = process.env.VUE_APP_API_URL;
             apiUrl = `${url}/patients`
         }
+        // filtering
         if(this.search !== '') {
             if(apiUrl.includes('?')) {
               apiUrl += `&SearchText=${this.search}`
@@ -92,6 +104,16 @@ export default {
               apiUrl += `?SearchText=${this.search}`
             }
         }
+        // sorting
+        this.headers.forEach(function(header) {
+          if(header.sortType != undefined && header.sortType !== 'none') {
+            if(apiUrl.includes('?')) {
+              apiUrl += `&Sort=${header.value},${header.sortType}`
+            } else {
+              apiUrl += `?Sort=${header.value},${header.sortType}`
+            }
+          }
+        })
         axios.get(apiUrl)
             .then(res => {
                 res = res.data;
@@ -103,6 +125,13 @@ export default {
                 console.log(res)
             })
     },
+    sortCol(colValue) {
+      const th = this.headers.find(th => th.value == colValue);
+      if(th.sortType == 'none') th.sortType = 'asc'
+      else if(th.sortType == 'asc') th.sortType = 'desc'
+      else th.sortType = 'none'
+      this.getPatients(null)
+    }
   },
 };
 </script>
