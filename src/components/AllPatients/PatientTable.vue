@@ -75,11 +75,11 @@ export default {
         headers: [
             { text: "Id", value: "Id", visible: true, sortable: true, sortType: 'none' },
             { text: "First Name", value: "FirstName", visible: true, sortable: true, sortType: 'none' },
-            { text: "Last Name", value: "LastName", visible: true },
-            { text: "Category", value: "Category", visible: true },
-            { text: "Date of Birth", value: "Dob", visible: true },
-            { text: "Insurance", value: "Insurance", visible: true },
-            { text: "Drug", value: "Drug", visible: true },
+            { text: "Last Name", value: "LastName", visible: true , sortable: true, sortType: 'none'},
+            { text: "Category", value: "Category", visible: true, sortable: true, sortType: 'none' },
+            { text: "Date of Birth", value: "Dob", visible: true , sortable: true, sortType: 'none'},
+            { text: "Insurance", value: "Insurance", visible: true , sortable: true, sortType: 'none'},
+            { text: "Drug", value: "Drug", visible: true, sortable: true, sortType: 'none' },
         ],
         patients: [],
     };
