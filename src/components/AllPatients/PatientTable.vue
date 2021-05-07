@@ -1,9 +1,11 @@
 <template>
   <div>
-      <div class="flex justify-end">
+      <div class="grid grid-cols-4 gap-4">
+        <select-input class="col-span-1" :elements="headers" @selectValue="toggleHeader"/>
+        <div class="col-span-2"></div>
         <input
             type="text"
-            class="w-1/4 bg-white my-4 rounded p-2 focus:outline-none focus:ring focus:border-blue-300 shadow-md"
+            class="w-full h-10 bg-white my-4 rounded p-2 focus:outline-none focus:ring focus:border-blue-300 shadow-md col-span-1"
             v-model="search"
             placeholder="Search"
             v-on:keyup="getPatients(null)"
@@ -11,7 +13,7 @@
       </div>
     <table class="stripe hover border-2 shadow-md border-gray-300 w-full">
       <tr>
-        <th v-for="th in headers" :key="th.value" class="cursor-pointer" @click="sortCol(th.value)">
+        <th v-for="th in headers" :key="th.value" class="cursor-pointer" @click="sortCol(th.value)" v-show="th.visible">
           {{ th.text }}
           <span v-if="th.sortable" class="inline-block">
             <svg v-if="th.sortType == 'desc'" class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -24,13 +26,13 @@
         </th>
       </tr>
       <tr v-for="patient in patients" :key="patient.id">
-        <td>{{ patient.id }}</td>
-        <td>{{ patient.firstName }}</td>
-        <td>{{ patient.lastName }}</td>
-        <td>{{ patient.category }}</td>
-        <td>{{ patient.dob }}</td>
-        <td>{{ patient.insurance }}</td>
-        <td>{{ patient.drug }}</td>
+        <td v-show="isColumnVisible('Id')">{{ patient.id }}</td>
+        <td v-show="isColumnVisible('FirstName')">{{ patient.firstName }}</td>
+        <td v-show="isColumnVisible('LastName')">{{ patient.lastName }}</td>
+        <td v-show="isColumnVisible('Category')">{{ patient.category }}</td>
+        <td v-show="isColumnVisible('Dob')">{{ patient.dob }}</td>
+        <td v-show="isColumnVisible('Insurance')">{{ patient.insurance }}</td>
+        <td v-show="isColumnVisible('Drug')">{{ patient.drug }}</td>
       </tr>
     </table>
     <div class="flex justify-end mt-2">
@@ -60,10 +62,13 @@
 
 <script>
 import  axios  from "axios";
+import SelectInput from './SelectInput.vue';
 export default {
+  components: { SelectInput },
   data() {
     return {
-        search: '',
+        hiddenCols: [],  // to store what cols to show or not
+        search: '', // for searchbox
         sortTypes: ['asc', 'desc', 'none'],
         pagination: {
             firstPage: null,
@@ -85,9 +90,22 @@ export default {
     };
   },
   mounted() {
-      this.getPatients(null);
+      this.hiddenCols = []
+      this.getPatients(null)
+      this.getHiddenCols()
   },
   methods: {
+    getHiddenCols() {
+        if(localStorage.getItem('hiddenCols') != undefined) {
+          this.hiddenCols = [];
+          this.hiddenCols = JSON.parse(localStorage.getItem('hiddenCols'));
+        }
+        for (const el of this.headers) {
+          if(this.hiddenCols.some(o => o == el.value)) {
+            this.toggleHeader(el)
+          }
+        }
+    },
     getPatients(fullUrl = null) {
         let apiUrl = '';
         if(fullUrl !== null) {
@@ -122,7 +140,6 @@ export default {
                 this.pagination.firstPage = res.firstPage;
                 this.pagination.lastPage = res.lastPage;
                 this.pagination.previousPage = res.previousPage;
-                console.log(res)
             })
     },
     sortCol(colValue) {
@@ -131,6 +148,21 @@ export default {
       else if(th.sortType == 'asc') th.sortType = 'desc'
       else th.sortType = 'none'
       this.getPatients(null)
+    },
+    isColumnVisible(name) {
+      const col = this.headers.filter( o => o.value == name)[0];
+      return col.visible;
+    },
+    toggleHeader(header) {
+      const col = this.headers.filter( o => o == header)[0];
+      col.visible = !col.visible;
+      if(col.visible == true) {
+        this.hiddenCols = this.hiddenCols.filter(o => o !== col.value)
+      } else {
+        this.hiddenCols.push(header.value);
+      }
+      localStorage.removeItem('hiddenCols')
+      localStorage.setItem('hiddenCols', JSON.stringify(this.hiddenCols))
     }
   },
 };
